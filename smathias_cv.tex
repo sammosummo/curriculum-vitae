@@ -1,0 +1,500 @@
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+% Change font
+\usepackage{fouriernc}
+
+% Simpler bibsection for CV sections
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\vspace{-\baselineskip}\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+%                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{compactitem}[#1]}
+        {\end{compactitem}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:\doilink{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Samuel Robert Mathias}
+
+\section{Contact Information}
+%
+\newlength{\rcollength}\setlength{\rcollength}{2.5in}
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+1 Autumn Street, Room 103 & \\
+Boston, MA 02215 & \\
+\textit{Phone:} +1 (617) 919 4742 \\
+\textit{Email:} \href{mailto:samuel.mathias@childrens.harvard.edu}{samuel.mathias@childrens.harvard.edu}\\
+ \textit{Personal website:} \href{https://crackedbassoon.com}{crackedbassoon.com}\\
+\end{tabular}
+
+\section{Academic Appointments}
+%
+\href{https://psych.hms.harvard.edu/}{Department of Psychiatry}, \href{https://hms.harvard.edu/}{Harvard Medical School}, Boston, MA
+\begin{outerlist}
+\item[]\emph{Instructor}, November 2018 -- present
+\begin{innerlist}
+\item Joint appointment with \href{http://www.childrenshospital.org/}{Boston Children's Hospital}
+\item Member of the \href{http://www.childrenshospital.org/research/centers-departmental-programs/tommy-fuss-center}{Tommy Fuss Center for Neuropsychiatric Disease Research}
+\item Faculty position ($\approx$ Assistant Professor at other US institutions)\\
+\end{innerlist}
+\end{outerlist}
+
+\href{https://medicine.yale.edu/psychiatry/}{Department of Psychiatry}, \href{https://medicine.yale.edu/}{Yale School of Medicine}, New Haven, CT
+\begin{outerlist}
+\item[]\emph{Associate Research Scientist}, March 2016 -- November 2018
+\item[]\emph{Postdoctoral Associate}, March 2014 -- February 2016
+\begin{innerlist}
+\item Member of \href{https://medicine.yale.edu/psychiatry/research/divisions/n3.aspx}{Division of Neurocognition, Neurocomputation, and Neurogenetics}\\
+\end{innerlist}
+\end{outerlist}
+
+\href{https://www.bu.edu/}{Boston University,} Boston, MA
+\begin{outerlist}
+\item[]\emph{Postdoctoral Associate,} October 2012 -- February 2014
+\begin{innerlist}
+\item Member of the Center for Computational Neuroscience and Neural Technology (defunct)\\
+\end{innerlist}
+\end{outerlist}
+
+\href{https://www.mpg.de/149614/kognition_neuro}{Max Planck Institute for Human Cognitive and Brain Sciences,} Leipzig, Germany
+\begin{outerlist}
+\item[] \emph{Postdoctoral Associate}, December 2010 -- August 2012
+\begin{innerlist}
+\item Member of the \href{https://www.cbs.mpg.de/former-groups/human-communication}{Neural Mechanisms of Human Communication} research group
+\end{innerlist}
+\end{outerlist}
+
+\section{Appointments\\at Hospitals}
+%
+\href{http://www.childrenshospital.org/centers-and-services/departments/psychiatry}{Department of Psychiatry}, Boston Children's Hospital, Boston, MA
+\begin{outerlist}
+\item[]\emph{Research Associate}, November 2018 -- present
+\begin{innerlist}
+\item Joint appointment with Harvard Medical School
+\end{innerlist}
+\end{outerlist}
+
+\section{Education}
+\href{http://www.york.ac.uk/psychology/}{University of York}, York, UK
+\begin{outerlist}
+\item[] PhD in Psychology, October 2007 -- November 2010 
+\item[] MSc in Cognitive Neuroscience (distinction), October 2006 -- July 2007
+\item[] BSc (Hons) in Psychology (2:1 $\approx$ magna cum laude), October 2003 -- July 2006
+\end{outerlist}
+
+\section{Grants and awards (8 items)}
+\begin{bibsection}
+\item \href{http://www.uni-leipzig.de/~acn/}{ACN} travel award, April 2014 (\texteuro 800, declined)
+\item \href{http://www.uni-leipzig.de/~acn/}{ACN} Erasmus Mundus grant, December 2011 (\texteuro 11,450)
+\item Winner of the K.~M.~Scott PhD prize, November 2011 (value: \textsterling 350)
+\item Grindley Grant travel award, \href{http://www.eps.ac.uk/}{Experimental Psychology Society}, February 2010 (\textsterling 500)
+\item Travel award, guarantors of \emph{\href{http://brain.oxfordjournals.org/}{Brain}}, February 2010 (\textsterling 400)
+\item \href{http://www.bbsrc.ac.uk/}{BBSRC} PhD studentship, 2007 -- 2010 (textsterling 36,000)
+\item University of York departmental MSc studentship, 2006 -- 2007 ($\sim$\textsterling 3,000)
+\item Winner of the \href{http://research.microsoft.com/en-us/}{Microsoft Research} undergraduate project prize, 2006 (\textsterling 250)\\
+\end{bibsection}
+
+\section{Publications\\(36 total, 8 first author)}
+\begin{bibsection}
+
+\item Groman, S. M., Massi, B.,  \textbf{Mathias, S. R.}, Lee, D., \& Taylor, J. R. (2019). Model-free and model-based influences in addiction-related behaviors. \emph{Biological Psychiatry.} \doi{10.1016/j.biopsych.2018.12.017}. \emph{Role: Assisted in data analysis, contributed to the manuscript.}
+
+\item Mollon, J.,  \textbf{Mathias, S. R.}, Knowles, E. E. M., Rodrigue, A., Koenis, M. M. G., Pearlson, G. D., Reichenberg, A., Barrett, J., Denbow, D., Aberizk, K., Zatony, M., Poldrack, R. A., Blangero, J., \& Glahn, D. C. (2019). Cognitive impairment from early to middle adulthood in patients with affective and nonaffective psychotic disorders. \emph{Psychological Medicine}, 1--10. \doi{10.1017/S0033291718003938}.  \emph{Role: Designed and created the cognitive battery, contributed to the manuscript.}
+
+\item Groman, S. M., Massi, B.,  \textbf{Mathias, S. R.}, Curry, D. W., Lee, D., \& Taylor, J. R. (2019). Neurochemical and behavioral dissections of decision-making in a rodent multistage task. \emph{The Journal of Neuroscience}, \emph{39} (2), 295--306. \doi{10.1523/JNEUROSCI.2219-18.2018}. \emph{Role: Assisted in data analysis, contributed to the manuscript.}
+
+\item Alexander-Bloch, A. F.,  \textbf{Mathias, S. R.}, Fox, P. T., Olvera, R. L., Göring, H. H. H., Duggirala, R., Curran, J. E., Blangero, J., \& Glahn, D. C. (2019). Human cortical thickness organized into genetically-determined communities across spatial resolutions. \emph{Cerebral Cortex}, \emph{29} (1), 106--118. \doi{10.1093/cercor/bhx309}.  \emph{Role: Performed genetic analysis, contributed to the manuscript.}
+
+\item Knowles, E. E. M., Curran, J. E., Meikle, P. J., Huynh, K.,  \textbf{Mathias, S. R.}, Göring, H. H. H., VandeBerg, J. L., Mahaney, M. C., Jalbrzikowski, M., Mosior, M. K., Michael, L. F., Olvera, R. L., Duggirala, R., Almasy, L., Glahn, D. C., \& Blangero, J. (2018). Disentangling the genetic overlap between cholesterol and suicide risk. \emph{Neuropsychopharmacology}, \emph{43} (13), 2556--2563. \doi{10.1038/s41386-018-0162-1}. \emph{Role: Contributed to the manuscript.}
+
+\item Mollon, J., Knowles, E. E. M.,  \textbf{Mathias, S. R.}, Gur, R., Peralta, J. M., Weiner, D. J., Robinson, E. B., Gur, R. E., Blangero, J., Almasy, L., \& Glahn, D. C. (2018). Genetic influence on cognitive development between childhood and adulthood. \emph{Molecular Psychiatry}. \doi{10.1038/s41380-018-0277-0}. \emph{Role: Contributed to the manuscript.}
+
+\item Knowles, E. E. M., \textbf{Mathias, S. R.}, Pearlson, G. D., Barrett, J., Mollon, J., Denbow, D., Aberzik, K., Zatony, M., \& Glahn, D. C. (2018). Clinical correlates of subsyndromal depression in African American individuals with psychosis: the relationship with positive symptoms and comorbid substance dependence. \emph{Schizophrenia Research}. \doi{10.1016/j.schres.2018.10.022}. \emph{Role: Contributed to the manuscript.}
+
+\item Kreitewolf, J., \textbf{Mathias, S. R.}, Trapeau, R., Obleser, J., \& Schönwiesner, M. (2018). Perceptual grouping in the cocktail party: contributions of voice-feature continuity.\emph{The Journal of the Acoustical Society of America}, \emph{144} (4), 2178. \doi{10.1121/1.5058684}.  \emph{Role: Helped design the study, contributed to the manuscript.}
+
+\item Knowles, E. E. M., \textbf{Mathias, S. R.}, Mollon, J., Rodrigue, A., Koenis, M. M. G., Dyer, T. D., Goring, H. H. H., Curran, J. E., Olvera, R. L., Duggirala, R., Almasy, L., Blangero, J., \& Glahn, D. C. (2018). A QTL on chromosome 3q23 influences processing speed in humans. \emph{Genes, Brain, and Behavior}, e12530. \doi{10.1111/gbb.12530}. \emph{Role: Contributed to the manuscript.}
+
+\item Sønderby, I. E., Gústafsson, Ó., Doan, N. T., Hibar, D. P., Martin-Brevet, S., Abdellaoui, A., Ames, D., Amunts, K., Andersson, M., Armstrong, N. J., Bernard, M., Blackburn, N., Blangero, J., Boomsma, D. I., Bralten, J., Brattbak, H. R., Brodaty, H., Brouwer, R. M., Bülow, R., Calhoun, V., Caspers, S., Cavalleri, G., Chen, C. H., Cichon, S., Ciufolini, S., Corvin, A., Crespo-Facorro, B., Curran, J. E., Dale, A. M., Dalvie, S., Dazzan, P., de Geus, E. J. C., de Zubicaray, G. I., de Zwarte, S. M. C., Delanty, N., den Braber, A., Desrivières, S., Donohoe, G., Draganski, B., Ehrlich, S., Espeseth, T., Fisher, S. E., Franke, B., Frouin, V., Fukunaga, M., Gareau, T., Glahn, D. C., Grabe, H., Groenewold, N. A., Haavik, J., Håberg, A., Hashimoto, R., Hehir-Kwa, J. Y., Heinz, A., Hillegers, M. H. J., Hoffmann, P., Holleran, L., Hottenga, J. J., Hulshoff, H. E., Ikeda, M., Jahanshad, N., Jernigan, T., Jockwitz, C., Johansson, S., Jonsdottir, G. A., Jönsson, E. G., Kahn, R., Kaufmann, T., Kelly, S., Kikuchi, M., Knowles, E. E. M., Kolskår, K. K., Kwok, J. B., Hellard, S. L., Leu, C., Liu, J., Lundervold, A. J., Lundervold, A., Martin, N. G., Mather, K., \textbf{Mathias, S. R.}, McCormack, M., McMahon, K. L., McRae, A., Milaneschi, Y., Moreau, C., Morris, D., Mothersill, D., Mühleisen, T. W., Murray, R., Nordvik, J. E., Nyberg, L., Olde Loohuis, L. M., Ophoff, R., Paus, T., Pausova, Z., Penninx, B., Peralta, J. M., Pike, B., Prieto, C., Pudas, S., Quinlan, E., Quintana, D. S., Reinbold, C. S., Marques, T. R., Reymond, A., Richard, G., Rodriguez-Herreros, B., Roiz-Santiañez, R., Rokicki, J., Rucker, J., Sachdev, P., Sanders, A. M., Sando, S. B., Schmaal, L., Schofield, P. R., Schork, A. J., Schumann, G., Shin, J., Shumskaya, E., Sisodiya, S., Steen, V. M., Stein, D. J., Steinberg, S., Strike, L., Teumer, A., Thalamuthu, A., Tordesillas-Gutierrez, D., Turner, J., Ueland, T., Uhlmann, A., Ulfarsson, M. O., van 't Ent, D., van der Meer, D., van Haren, N. E. M., Vaskinn, A., Vassos, E., Walters, G. B., Wang, Y., Wen, W., Whelan, C. D., Wittfeld, K., Wright, M., Yamamori, H., Zayats, T., Agartz, I., Westlye, L. T., Jacquemont, S., Djurovic, S., Stefánsson, H., Stefánsson, K., Thompson, P., Andreassen, O. A., \& 16p11.2 European Consortium, for the ENIGMA-CNV working group. (2018). Dose response of the 16p11.2 distal copy number variant on intracranial volume and basal ganglia. \emph{Molecular Psychiatry}. \doi{10.1038/s41380-018-0118-1}. \emph{Role: Provided consortium data.}
+
+\item Glahn, D. C., Nimgaonkar, V. L., Raventós, H., Contreras, J., McIntosh, A. M., Thomson, P. A., Jablensky, A., McCarthy, N. S., Charlesworth, J. C., Blackburn, N. B., Peralta, J. M., Knowles, E. E. M., \textbf{Mathias, S. R.}, Ament, S. A., McMahon, F. J., Gur, R. C., Bucan, M., Curran, J. E., Almasy, L., Gur, R. E., \& Blangero, J. (2018). Rediscovering the value of families for psychiatric genetics research. \emph{Molecular Psychiatry}. \doi{10.1038/s41380-018-0073-x}. \emph{Role: Created the figures.}
+
+\item Kong, X. Z., \textbf{ Mathias, S. R.}, Guadalupe, T., ENIGMA Laterality Working Group., Glahn, D. C., Franke, B., Crivello, F., Tzourio-Mazoyer, N., Fisher, S. E., Thompson, P. M., \& Francks, C. (2018). Mapping cortical brain asymmetry in 17,141 healthy individuals worldwide via the ENIGMA consortium. \emph{Proceedings of the National Academy of Sciences of the United States of America}, \emph{115} (22), E5154--E5163. \doi{10.1073/pnas.1718418115}. \emph{Role: Performed genetic analysis.}
+
+\item \textbf{Mathias, S. R.}, Knowles, E. E. M., Barrett, J., Beetham, T., Leach, O., Buccheri, S., Aberizk, K., Blangero, J., Poldrack, R. A., \& Glahn, D. C. (2018). Deficits in visual working-memory capacity and general cognition in African Americans with psychosis. \emph{Schizophrenia Research}, \emph{193}, 100--106. \doi{10.1016/j.schres.2017.08.015}.  \emph{Role: Designed and created the cognitive battery, designed the study, analyzed the data, wrote the manuscript.}
+
+\item Hodgson, K., Poldrack, R. A., Curran, J. E., Knowles, E. E., \textbf{Mathias,  S.}, G\"oring, H. H., Yao, N., Olvera, R. L., Fox, P. T., Almasy, L., Duggirala, R., Barch, D. M., Blangero, J., \& Glahn, D. C. (2016). Shared genetic factors influence head motion during fMRI and body mass index. \emph{Cerebral Cortex}, \emph{27} (12) 5539--5546. \doi{10.1093/cercor/bhw321}. \emph{Role: Contributed to the manuscript.}
+
+\item Guadalupe, T., \textbf{Mathias, S. R.}, van Erp, T. G., Whelan, C. D., Zwiers, M. P., Abe, Y., Abramovic, L., Agartz, I., Andreassen, O. A., Arias-V\'{a}squez, A., Aribisala, B. S., Armstrong, N. J., Arolt, V., Artiges, E., Ayesa-Arriola, R., Baboyan, V. G., Banaschewski, T., Barker, G., Bastin, M. E., Baune, B. T., Blangero, J., Bokde, A. L., Boedhoe, P. S., Bose, A., Brem, S., Brodaty, H., Bromberg, U., Brooks, S., B\"uchel, C., Buitelaar, J., Calhoun, V. D., Cannon, D. M., Cattrell, A., Cheng, Y., Conrod, P. J., Conzelmann, A., Corvin, A., Crespo-Facorro, B., Crivello, F., Dannlowski, U., de Zubicaray, G. I., de Zwarte, S. M., Deary, I. J., Desrivi\`{e}res, S., Doan, N. T., Donohoe, G., D\o{}rum, E. S., Ehrlich, S., Espeseth, T., Fern\'{a}ndez, G., Flor, H., Fouche, J. P., Frouin, V., Fukunaga, M., Gallinat, J., Garavan, H., Gill, M., Suarez, A. G., Gowland, P., Grabe, H. J., Grotegerd, D., Gruber, O., Hagenaars, S., Hashimoto, R., Hauser, T. U., Heinz, A., Hibar, D. P., Hoekstra, P. J., Hoogman, M., Howells, F. M., Hu, H., Hulshoff Pol, H. E., Huyser, C., Ittermann, B., Jahanshad, N., J\"{o}nsson, E. G., Jurk, S., Kahn, R. S., Kelly, S., Kraemer, B., Kugel, H., Kwon, J. S., Lemaitre, H., Lesch, K. P., Lochner, C., Luciano, M., Marquand, A. F., Martin, N. G., Mart\'{i}nez-Zalaca\'{i}n, I., Martinot, J. L., Mataix-Cols, D., Mather, K., McDonald, C., McMahon, K. L., Medland, S. E., Mench\'{o}n, J. M., Morris, D. W., Mothersill, O., Maniega, S. M., Mwangi, B., Nakamae, T., Nakao, T., Narayanaswaamy, J. C., Nees, F., Nordvik, J. E., Onnink, A. M., Opel, N., Ophoff, R., Paill\`{e}re Martinot, M. L., Papadopoulos Orfanos, D., Pauli, P., Paus, T., Poustka, L., Reddy, J. Y., Renteria, M. E., Roiz-Santi\'{a}\~{n}ez, R., Roos, A., Royle, N. A., Sachdev, P., S\'{a}nchez-Juan, P., Schmaal, L., Schumann, G., Shumskaya, E., Smolka, M. N., Soares, J. C., Soriano-Mas, C., Stein, D. J., Strike, L. T., Toro, R., Turner, J. A., Tzourio-Mazoyer, N., Uhlmann, A., Hern\`{a}ndez, M. V., van den Heuvel, O. A., van der Meer, D., van Haren, N. E., Veltman, D. J., Venkatasubramanian, G., Vetter, N. C., Vuletic, D., Walitza, S., Walter, H., Walton, E., Wang, Z., Wardlaw, J., Wen, W., Westlye, L. T., Whelan, R., Wittfeld, K., Wolfers, T., Wright, M. J., Xu, J., Xu, X., Yun, J. Y., Zhao, J., Franke, B., Thompson, P. M., Glahn, D. C., Mazoyer, B., Fisher, S. E., \& Francks, C. (2017). Human subcortical brain asymmetries in 15,847 people worldwide reveal effects of age and sex. \emph{Brain Imaging and Behavior}, \emph{11} (5), 1497--1514. \doi{10.1007/s11682-016-9629-z}. \emph{Role: Performed genetic analysis.}
+
+\item Yao, N., Winkler, A. M., Barrett, J., Book, G. A., Beetham, T., Horseman, R., Leach, O., Hodgson, K., Knowles, E. E., \textbf{Mathias, S.}, Stevens, M. C., Assaf, M., van Erp, T. G. M., Pearlson, G. D., \& Glahn, D. C. (2017). Inferring pathobiology from structural MRI in schizophrenia and bipolar disorder: Modeling head motion and neuroanatomical specificity. \emph{Human Brain Mapping}, \emph{38} (8), 3757--3770. \doi{10.1002/hbm.23612}. \emph{Role: Contributed to the manuscript.}
+
+\item  \textbf{Mathias, S. R.}, Knowles, E. E. M., Barrett, J., Leach, O., Buccheri S., Beetham, T., Blangero, J., Poldrack, R. A. \& Glahn, D. C. (2017). The processing-speed impairment in psychosis is more than just accelerated aging. \emph{Schizophrenia Bulletin}, \emph{43} (4), 814--823. \doi{10.1093/schbul/sbw168}. \emph{Role: Designed and created the cognitive battery, designed the study, analyzed the data, wrote the manuscript.}
+
+\item Knowles, E. E. M., Huynh, K., Meikle, P.J., G\"oring, H. H., H., Olvera, R. L., \textbf{Mathias, S. R.}, Duggirala, R., Almasy, L., Blangero, J., Curran, J. E., \& Glahn, D. C. (2017). The lipidome in major depressive disorder: Shared genetic influence for ether-phosphatidylcholines, a plasma-based phenotype related to inflammation, and disease risk. \emph{European Psychiatry}, \emph{43}, 44--50. \doi{10.1016/j.eurpsy.2017.02.479}. \emph{Role: Contributed to the manuscript.}
+
+\item Hodgson, K., Carless, M., Kulkarni, H., Curran, J. E., Sprooten, E., Knowles, E. E., \textbf{Mathias,  S.}, G\"oring, H. H., Yao, N., Olvera, R. L., Fox, P. T., Almasy, L., Duggirala, R., Blangero, J., \& Glahn, D. C. (2017). Epigenetic age acceleration assessed with human white-matter images. \emph{The Journal of Neuroscience}, \emph{37} (18) 4735--4743. \doi{10.1523/JNEUROSCI.0177-17.2017}. \emph{Role: Contributed to the manuscript.}
+
+\item Varghese, L., \textbf{Mathias, S. R.}, Bensussen, S., Chou, K., Goldberg, H. R., Sun, Y., Sekuler, R., \& Shinn-Cunningham, B. (2017). Bi-directional audiovisual influences on temporal modulation discrimination. \emph{The Journal of the Acoustical Society of America}, \emph{141}(4), 2474--2488. \doi{10.1121/1.4979470}. \emph{Role: Supervised data analysis, contributed to the manuscript.}
+
+\item Knowles, E. E., Meikle, P. J., Huynh, K., Göring, H. H., Olvera, R. L., \textbf{Mathias, S. R.}, Duggirala, R., Almasy, L., Blangero, J., Curran, J. E., \& Glahn, D. C. (2017). Serum phosphatidylinositol as a biomarker for bipolar disorder liability. \emph{Bipolar Disorders}, \emph{19} (2), 107--115. \doi{10.1111/bdi.12468}. \emph{Role: Contributed to the manuscript.}
+
+\item Kreitewolf, J., \textbf{Mathias, S. R.}, \& von Kriegstein, K. (2017). Implicit talker training improves comprehension of auditory speech in noise. \emph{Frontiers in Psychology}, \emph{8}, 1584. \doi{10.3389/fpsyg.2017.01584}.  \emph{Role: Helped design the study, contributed to the manuscript.}
+
+\item Sprooten, E., Barrett, J., McKay, D. R., Knowles, E. E., \textbf{Mathias, S. R.}, Winkler, A. M., Brumbaugh, M. S., Landau, S., Cyr, L., Kochunov, P., \& Glahn, D. C. (2016). A comprehensive tractography study of patients with bipolar disorder and their unaffected siblings. \emph{Human Brain Mapping}, \emph{37} (10), 3474--3485. \doi{10.1002/hbm.23253}. \emph{Role: Contributed to the manuscript.}
+
+\item \textbf{Mathias, S. R.} (2016). Unified analysis of accuracy and reaction times via models of decision making. \emph{Proceedings of Meetings on Acoustics}, \emph{26}, 050001. \doi{10.1121/2.0000219}. \emph{Role: Sole author.}
+
+\item Knowles E. E., Kent J. W. Jr, McKay, D. R., Sprooten, E., \textbf{Mathias, S. R.}, Curran, J. E., Carless, M. A., de Almeida, M. A., Harald, H. H., Olvera, R. L., Fox, P. T., Duggirala, R., Almasy, L., Blangero, J., \& Glahn, D. C. (2016). Genome-wide linkage on chromosome 10q26 for a dimensional scale of major depression. \emph{Journal of Affective Disorders}, \emph{191}, 123--131. \doi{10.1016/j.jad.2015.11.012}. \emph{Role: Contributed to the manuscript.}
+
+\item \textbf{Mathias, S. R.}, Knowles, E. E., Kent, J. W. Jr, McKay,  D. R., Curran J. E, Almeida, M. A., Dyer, T. D., G\"oring, H. H., Olvera, R. L., Duggirala, R., Fox, P. T., Almasy, L., Blangero, J. \& Glahn, D. C. (2016). Recurrent major depression and right hippocampal volume: A bivariate linkage and association study. \emph{Human Brain Mapping}, \emph{37} (1), 191--202. \doi{10.1002/hbm.23025} . \emph{Role: Designed the study, analyzed the data, wrote the manuscript.}
+
+\item Glahn, D. C., Knowles, E. E., \textbf{Mathias, S. R.}, Almasy, L., Hodgson, K., Yao, N., Olvera, R. L., Curran, J. E., \& Blangero, J. (2016). Conceptualizing major depression: From genes to neuroanatomy to epidemiology. In T. Lehner, B. L. Miller \& M. W. State (Eds.) \emph{Genomics, circuits, and pathways in clinical neuropsychiatry} (pp.~487--501). Cambridge, MA: Academic Press. \doi{10.1016/B978-0-12-800105-9.00031-7}. \emph{Role: Contributed to the manuscript.}
+
+\item Sprooten, E., Gupta, C. N., Knowles, E. E., McKay, D. R., \textbf{Mathias, S. R.}, Curran, J. E., Kent, J. W., Carless, M. A,  Almeida, M. A., Dyer, T. D., G\"{o}ring, H. H., Olvera, R. L, Kochunov, P., Fox, P. T., Duggirala, R., Almasy, L., Calhoun, V. D, Blangero, J., Turner, J. A., \& Glahn, D. C. (2015). Genome-wide significant linkage of schizophrenia-related neuroanatomical trait to 12q24. \emph{American Journal of Medical Genetics. Part B: Neuropsychiatric Genetics}, \emph{168} (8), 678--786. \doi{10.1002/ajmg.b.32360}.  \emph{Role: Contributed to the manuscript.}
+
+\item Glahn, D. C., Williams, J. T., McKay, D. R., Knowles, E. E., Sprooten, E., \textbf{Mathias, S. R.}, Curran J. E, Kent, J. W., Carless, M. A, G\"{o}ring, H. H., Dyer, T. D., Woolsey, M. D., Winkler, A. M., Olvera, R. L., Kochunov, P., Fox, P. T., Duggirala, R., Almasy, L., \& Blangero, J. (2015). Discovering schizophrenia endophenotypes in randomly ascertained pedigrees. \emph{Biological Psychiatry}, \emph{77} (1), 75--83. \doi{10.1016/j.biopsych.2014.06.027}. \emph{Role: Contributed to the manuscript.}
+
+\item Glahn, D. C., Sprooten, E., Knowles, E. E., McKay, D. R., \textbf{Mathias, S. R.}, Almasy, L., \& Blangero, J. (2015). Imaging Genetics. In A. W. Toga \& R. A. Poldrack (Eds.) \emph{Brain mapping: An encyclopedic reference} (Vol. 3, pp.~929--932). Amsterdam: Elsevier. \doi{10.1016/B978-0-12-397025-1.00112-3}.  \emph{Role: Contributed to the manuscript.}
+
+\item Knowles, E. E., \textbf{Mathias, S. R.}, McKay, D. R., Sprooten, E., Blangero, J., Almasy, L., \& Glahn, D. C. (2014). Genome-wide analyses of working-memory ability: A review. \emph{Current Behavioral Neuroscience Reports}, \emph{1} (4), 224--233. \doi{10.1007/s40473-014-0028-8}.  \emph{Role: Contributed to the manuscript.}
+
+\item \textbf{Mathias, S. R.}, \& von Kriegstein, K. (2014). How do we recognise who is speaking? \emph{Frontiers in Bioscience (Scholar Edition)}, \emph{6}, 92--109. \doi{10.2741/S417}. \emph{Role: Performed the literature review, wrote the manuscript.}
+
+\item \textbf{Mathias, S. R.}, \& von Kriegstein, K. (2014). Percepts, not acoustic properties, are the units of auditory short-term memory. \emph{Journal of Experimental Psychology: Human Perception and Performance}, \emph{40} (2), 445--50. \doi{10.1037/a0034890}. \emph{Role: Designed the study, ran the study, analyzed the data, wrote the manuscript.}
+
+\item Roswandowitz, C., \textbf{Mathias, S. R.}, Hintz, F., Kreitewolf, J., Schelinski, S., \& von Kriegstein, K. (2014). Two cases of selective developmental voice-recognition impairments. \emph{Current Biology}, \emph{24} (19), 2348--53. \doi{10.1016/j.cub.2014.08.048}. \emph{Role: Contributed to the manuscript.}
+
+\item \textbf{Mathias, S. R.}, Bailey, P. J., Semal, C., \& Demany, L. (2011). A note about insensitivity to pitch-change direction. \emph{The Journal of the Acoustical Society of America}, \emph{130} (4), EL129--34. \doi{10.1121/1.3629139}. \emph{Role: Designed the study, ran the study, analyzed the data, wrote the manuscript.}
+    
+\item \textbf{Mathias, S. R.}, Micheyl, C., \& Bailey, P. J. (2010). Stimulus uncertainty and insensitivity to pitch-change direction. \emph{The Journal of the Acoustical Society of America}, \emph{127} (5), 3026--37. \doi{10.1121/1.3365252}. \emph{Role: Designed the study, ran the study, analyzed the data, wrote the manuscript.}
+
+\end{bibsection}
+
+\section{Oral Presentations\\(4 items)} \begin{bibsection}
+
+\item \textbf{Mathias, S. R.}, Knowles, E. E. M., Barrett, J., Leach, O., Buccheri S., Beetham, T., Blangero, J., Poldrack, R. A. \& Glahn, D. C. (2017). The processing-speed impairment in psychosis is more than just accelerated aging. Podium presentation at the 72nd \emph{Society of Biological Psychiatry Annual Scientific Program and Convention}, San Diego, CA.
+
+\item \textbf{Mathias, S.~R.}, (2016). Unified analysis of accuracy and reaction times (RTs) via models of decision making. Workshop presentation at the 171st \emph{Meeting of the Acoustical Society of America}, Salt Lake City, UT.
+
+\item \textbf{Mathias, S.~R.}, Shinn-Cunningham, B.~G., Micheyl, C., \& Oxenham, A.~J. (2014). Adaptation reveals automatic pitch-shift detectors in the human auditory system. Podium presentation at the 167th \emph{Meeting of the Acoustical Society of America}, Providence, RI.
+
+\item \textbf{Mathias, S.~R.}, Micheyl, C., \& Shinn-Cunningham, B.~G. (2014). Auditory and visual short-term memories are forgotten differently. Podium presentation at the 37th \emph{Annual Midwinter Research Meeting of the Association for Research in Otolaryngology}, San Diego, CA.
+\\\end{bibsection}
+
+%\section{Poster Presentations (excl. coauthored)} \begin{bibsection}
+
+%\item \textbf{Mathias, S.~R.}, Knowles, E.~E.~M, Kent, J.~W., McKay,  D.~R., Curran J.~E, Almeida, M.~A., Dyer, T.~D., G\"oring, H.~H., Olvera, R.~L., Duggirala, R., Fox, P.~T., Almasy, L., Blangero, J. \& Glahn, D.~C. (2015). Recurrent major depression and right hippocampal volume: A bivariate linkage and association study. Poster presentation at the \emph{Society of Biological Psychiatry 71st Annual Meeting}, Atlanta, GA.
+%\item \textbf{Mathias, S.~R.}, Knowles, E.~E.~M, Kent, J.~W., McKay,  D.~R., Curran J.~E, Almeida, M.~A., Dyer, T.~D., G\"oring, H.~H., Olvera, R.~L., Duggirala, R., Fox, P.~T., Almasy, L., Blangero, J. \& Glahn, D.~C. (2015). Recurrent major depression and right hippocampal volume: A bivariate linkage and association study. Poster presentation at the \emph{American Society of Human Genetics Annual Meeting}, Baltimore, MD.
+%\item \textbf{Mathias, S.~R.}, Micheyl, C., \& Shinn-Cunningham, B.~G. (2014). Gradual decay of auditory short-term memory. Poster presentation at the 167th \emph{Meeting of the Acoustical Society of America}, Providence, RI.
+%\item \textbf{Mathias, S.~R.}, Micheyl, C., \& Shinn-Cunningham, B.~G. (2014). Do normal-reading listeners use `perceptual anchors' during frequency-discrimination tasks? Poster presentation at the 167th \emph{Meeting of the Acoustical Society of America}, Providence, RI.
+%\item \textbf{Mathias, S.~R.}, Micheyl, C., \& Oxenham, A.~J. (2013). The effect of preceding tones of frequency discrimination. Poster presentation at the 36th \emph{Annual Midwinter Research Meeting of the Association for Research in Otolaryngology}, Baltimore, MD.
+%\item \textbf{Mathias, S.~R.}, Micheyl, C., \& Bailey, P.~J. (2010). Insensitivity to pitch-change direction with fixed- And roved-frequency tones. Poster presentation at the 33rd \emph{Annual Midwinter Research Meeting of the Association for Research in Otolaryngology}, Anaheim, CA.
+%\item \textbf{Mathias, S.~R.}, \& Bailey, P.~J. (2009). Pitch discrimination with roved- and fixed-frequency stimuli. Poster presentation at the \emph{Short Papers Meeting of the British Society of Audiology}, Southampton.
+%\item \textbf{Mathias, S.~R.}, \& Bailey, P.~J. (2008). Insensitivity to the direction of pitch change: The role of stimulus uncertainty and correlations with self-reported hearing. Poster presentation at the \emph{Short Papers Meeting of the British Society of Audiology}, York.
+%\item Summerfield, A.~Q., Mathias, S.~R., Knowles, E.~E.~M., Kitterick, P.~T., \& Bailey, P.~J. (2008). Cortical Indices of Auditory Segregation Revealed by Magnetoencephalography: A Parametric Study of Onset Asynchrony and Mistuning. Poster presentation at the 31st \emph{\href{http://www.aro.org/mwm/Program_Book_08_Final_PDF1.pdf}{Annual Midwinter Research Meeting of the Association for Research in Otolaryngology}}, Phoenix, AZ.
+%\item \textbf{Mathias, S.~R.}, Knowles, E.~E.~M., Kitterick, P.~T., Bailey, P.~J., \& Summerfield, A.~Q. (2007) Cortical indices of auditory segregation revealed by magnetoencephalography. Poster presentation at the \emph{Short Papers Meeting of the British Society of Audiology}, London.\\
+%\end{bibsection}
+
+\section{Reviewer for Journals}
+\emph{The Journal of the Acoustical Society of America}\\
+\emph{The Journal of Neuroscience}\\
+\emph{Perception}\\
+\emph{Psychological Medicine}\\
+\emph{Psychomusicology}\\
+\emph{Speech Communication}
+
+
+\section{Skills}\begin{bibsection}
+\item Expert in various statistical methods, including Bayesian methods (e.g., hierarchical models, Bayesian hypothesis testing), signal detection theory, models of decision making (e.g., drift diffusion models), and methods for quantitative genetics in pedigrees (e.g., variance components, linkage, genome-wide association).
+\item Familiar with the following computer software:
+\begin{outerlist}
+\item[]Languages
+\begin{innerlist}\item \href{https://www.gnu.org/software/bash/}{Bash}, \href{https://golang.org/}{Go}, \href{https://www.latex-project.org/}{\LaTeX}, \href{https://www.mathworks.com/products/matlab.html}{MATLAB}/\href{https://www.gnu.org/software/octave/}{Octave}, \href{https://www.php.net/}{PHP}, \href{https://www.python.org/}{Python}, \href{https://www.qt.io/}{Qt}, \href{https://www.r-project.org/}{R}, \href{https://www.rust-lang.org/}{Rust}\end{innerlist}
+\item[]Statistics
+\begin{innerlist}\item MATLAB, \href{https://docs.pymc.io/}{PyMC3},  R, \href{https://www.tensorflow.org/}{TensorFlow}, \href{https://scikit-learn.org/stable/}{scikit-learn}, \href{https://hpc.nih.gov/docs/solar-8.1.1/00.contents.html}{SOLAR}, \href{https://mc-stan.org/}{Stan}\end{innerlist}
+\item[]Neuroimaging
+\begin{innerlist}\item \href{https://surfer.nmr.mgh.harvard.edu/}{FreeSurfer}, \href{https://fsl.fmrib.ox.ac.uk/fsl/fslwiki}{FSL}\end{innerlist}
+\end{outerlist}
+\item Created the following computer software:
+\begin{outerlist}
+\item[]\href{https://github.com/sammosummo/Charlie2}{Charlie}
+\begin{innerlist}
+\item Computerized neurocognitive test battery written in Python and Qt.
+\item Version 2 is publicly available and open source, version 3 is currently private but available upon request.
+\end{innerlist}
+\item[]bayesvarcomp (in development)
+\begin{innerlist}
+\item Python package built on top of pymc3 to perform Bayesian estimation and hypothesis testing of variance components for quantitative genetics (``Bayesian SOLAR").
+\end{innerlist}
+\end{outerlist}
+\end{bibsection}
+
+\section{Teaching}
+\begin{bibsection}
+\item People I have supervised directly:
+\begin{outerlist}
+\item[]Denis Gutmann, 2011 -- 2012 (Research Assistant)
+\item[]Gregor Däubler, 2012 (Research Assistant)
+\item[]Carolin Otto, 2012 (Masters student)
+\end{outerlist}
+\item Colleagues to whom I have provided considerable assistance, resulting in co-authored publications:
+\begin{outerlist}
+\item[]Jens Kreitewolf
+\item[]Claudia Roswandowtz
+\item[]Leonard Varghese
+\item[]Josephine Mollon
+\item[]Amanda Rodrigue 
+\end{outerlist}
+\item I regularly post tutorials for various coding and statistical problems to my website, \href{mailto:https://crackedbassoon.com}{crackedbassoon.com}.
+\end{bibsection}
+
+
+\section{Current Funding}
+NIH \href{https://www.nia.nih.gov/}{National Institute on Aging}
+\begin{outerlist}
+\item[] R01AG058464, August 2018 -- May 2023
+\begin{innerlist}
+\item Title: \emph{Imaging Genomics of the Aging Brain}
+\item PIs: Glahn, Blangero
+\item The biological mechanisms responsible for age-related changes in neuroanatomy, neurophysiology and neurocognition are largely unknown. By identifying genetic and environmental factors involved in brain aging, our study will reveal novel biological candidates for the determinants of normal aging.\\
+\end{innerlist}
+\end{outerlist}
+NIH \href{https://www.nimh.nih.gov/}{National Institute of Mental Health}
+\begin{outerlist}
+\item[] R01MH106324, December 2014 -- November 2019
+\begin{innerlist}
+\item Title: \emph{Gene Networks Influencing Psychotic Dysconnectivity in African Americans}
+\item PIs: Glahn, Poldrack, Blangero
+\item Our goals are to use exome sequencing in African-Americans to identify specific genetic variants that increase risk for psychosis and determine whether and how these gene sets impact psychotic dysconnectivity.\\
+\end{innerlist}
+\end{outerlist}
+
+
+\section{Completed Funding}
+NIH National Institute of Mental Health
+\begin{outerlist}
+\item[] U01MH105630, March 2015 -- February 2019
+\begin{innerlist}
+\item Title: \emph{Pedigree-Based Whole Genome Sequencing of Affective and Psychotic Disorders}
+\item PI: Glahn
+\item This eight-site international consortium was designed to identify rare causal variants for affective and psychotic illnesses using extended multiplex pedigrees.
+\end{innerlist}
+\item[] R01MH107248, August 2015 -- May 2018
+\begin{innerlist}
+\item Title: \emph{Neurodevelopment: Genes, Environment, and Their Interactions}
+\item PIs: Blangero, Almasy, Glahn, Gur
+\item The goal of this study was to localize and characterize genes that influence normal maturation-related changes in neurocognitive, neuroanatomic and neurophysiological changes with age.
+\end{innerlist}
+\item[] R01MH078143, August 2006 -- February 2016
+\begin{innerlist}
+\item Title: \emph{Genetics of Brain Structure and Function}
+\item PI:  Glahn
+\item By identifying genes involved in brain function and structure, this study revealed novel biological candidates for the determinants of such diseases, improving the potential for intervention and treatment.\\
+\end{innerlist}
+\end{outerlist}
+NIH \href{https://www.nibib.nih.gov/}{National Institute of Biomedical Imaging and Bioengineering}
+\begin{outerlist}
+\item[] U54EB020403, September 2014 -- September 2018
+\begin{innerlist}
+\item Title: \emph{ENIGMA Center for Worldwide Medicine, Imaging \& Genomics}
+\item PI:  Thompson
+\item The ENIGMA Center for Worldwide Medicine, Imaging and Genomics is a global effort uniting 287 scientists from 125 institutions focused on imaging genomic analyses in 9 major human brain diseases.\\
+\end{innerlist}
+\end{outerlist}
+
+
+
+\section{Referees}
+%
+%\newlength{\rcollength}\setlength{\rcollength}{2.5in}%
+%
+David Glahn\\
+Director, Tommy Fuss Center for Neuropsychiatric Disease Research\\
+Boston Children’s Hospital; and\\
+Member of the Faculty, Department of Psychiatry\\
+Harvard Medical School\\
+1 Autumn Street, BCH 3428\\
+Boston, MA 02115\\
+\textit{Phone:} +1 (617) 919 6819\\
+\textit{E-mail:} \href{mailto:david.glahn@childrens.harvard.edu}{david.glahn@childrens.harvard.edu} \\
+\\
+John Blangero \\
+Director, Genomics Computing Center \\
+UTRGV School of Medicine \\
+South Texas Diabetes and Obesity Insititute \\
+Brownsville Campus, BROBL, Room 131 \\
+1 West University Blvd \\
+Brownsville, TX 78520 \\
+\textit{Phone:} +1 (956) 882 7522 \\
+\textit{E-mail:} \href{mailto:john.blangero@utrgv.edu}{john.blangero@utrgv.edu} \\
+\\
+Prof.~Barbara G.~Shinn-Cunningham\\
+Director, Carnegie Mellon Neuroscience Institute\\
+Baker Hall, 254G\\
+Carnegie Mellon University\\
+5000 Forbes Avenue\\
+Pittsburgh, PA 15213\\
+\textit{E-mail:} \href{mailtobgsc@andrew.cmu.edu}{bgsc@andrew.cmu.edu}\\
+
+\end{document}
+
+
+
+
